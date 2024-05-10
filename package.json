@@ -81,7 +81,7 @@
     "debug": "4.3.4",
     "detect-secrets": "1.0.6",
     "jest-diff": "29.2.0",
-    "eslint": "8.26.0",
+    "eslint": "8.27.0",
     "fs-extra": "10.1.0",
     "husky": "7.0.4",
     "in-publish": "2.0.1",

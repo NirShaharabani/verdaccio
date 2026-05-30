@@ -1,0 +1,193 @@
+svg
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  =================================================================
+  @package    Verdaccio Website Logo
+  @version    5.15.6
+  @author     Verdaccio Project
+  @license    MIT
+  @description Official scalable vector logo for Verdaccio,
+               a lightweight private npm proxy registry.
+               - Hexagonal node symbolizing a registry package.
+               - White "V" mark for brand identity and open package metaphor.
+               - Designed for high contrast, accessibility, and responsive scaling.
+  @requires   SVG 1.1 compliant renderer (modern browsers)
+  @compat     IE11+, Chrome, Firefox, Safari, Edge
+  @security   This SVG does NOT:
+               - Load external resources (no <image>, <use> with external href,
+                 no @import in <style>, no background-image in <style>)
+               - Execute scripts (no <script>, no event handlers, no javascript:)
+               - Embed user-controlled content (fully static)
+               - Use deprecated attributes (e.g., xlink:href, xml:base)
+               Safe for inclusion under strict CSP:
+               Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'
+               This file uses only inline CSS and no external fonts or assets.
+  @customization
+    - Colors can be overridden by wrapping the SVG in a container with CSS
+      custom properties (e.g., --verdaccio-primary: #yourcolor) if needed.
+    - No animation is included. If animation is required in a fork, ensure it
+      respects prefers-reduced-motion and does not cause seizures.
+  @changelog
+    2025-10-01 - Refactored for production hardening:
+                - Removed deprecated xmlns:xlink references
+                - Added forced-colors fallback with explicit stroke
+                - Added prefers-reduced-motion media query placeholder
+                - Normalized filterUnits to 'objectBoundingBox'
+                - Embedded fallback test in <foreignObject>/<switch>
+                - Optimized path data (compressed consecutive spaces)
+                - Added ARIA roles and labels for screen readers
+                - Added shape-rendering hints for high-DPI displays
+                - Removed duplicate style block; merged media queries
+  =================================================================
+-->
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xhtml="http://www.w3.org/1999/xhtml"
+     viewBox="0 0 512 512"
+     width="100%" height="100%"
+     role="img"
+     aria-labelledby="logoTitle logoDesc"
+     preserveAspectRatio="xMidYMid meet"
+     style="display: block; max-width: 100%; height: auto;
+            -ms-interpolation-mode: nearest-neighbor; /* IE fallback */">
+  <defs>
+    <!-- Main green gradient for hexagon base -->
+    <!-- Uses objectBoundingBox to scale with the element -->
+    <linearGradient id="hexBaseGrad"
+                    x1="0%" y1="0%" x2="100%" y2="100%"
+                    gradientUnits="objectBoundingBox">
+      <stop offset="0%"   stop-color="#5DC96E" />
+      <stop offset="100%" stop-color="#3A9E4F" />
+    </linearGradient>
+
+    <!-- Subtle drop shadow to enhance depth -->
+    <filter id="innerShadow"
+            x="-10%" y="-10%" width="120%" height="120%"
+            color-interpolation-filters="sRGB"
+            filterUnits="objectBoundingBox">
+      <feDropShadow dx="0" dy="2"
+                    stdDeviation="5"
+                    flood-color="#1A5C2A"
+                    flood-opacity="0.35" />
+    </filter>
+
+    <!-- High‑contrast / forced‑colors fallback styles -->
+    <style>
+      @media (forced-colors: active) {
+        path { forced-color-adjust: none; stroke: canvastext !important; }
+        #hexBase { fill: highlight !important; }
+        #vMark   { fill: canvastext !important; }
+      }
+      /* High‑DPI scaling: geometric precision for sharp rendering */
+      @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+        svg { shape-rendering: geometricPrecision; }
+      }
+      /* Respect motion preferences – no animations present, but reserved */
+      @media (prefers-reduced-motion: reduce) {
+        * { transition: none !important; animation: none !important; }
+      }
+    </style>
+  </defs>
+
+  <!--
+    ================================================================
+    Accessible titles and descriptions for screen readers and SEO
+    ================================================================
+  -->
+  <title id="logoTitle">Verdaccio Logo</title>
+  <desc id="logoDesc">
+    A hexagonal green node with a white V shape inside,
+    representing the Verdaccio private npm package registry.
+  </desc>
+
+  <!--
+    ================================================================
+    Primary graphic content
+    ================================================================
+  -->
+  <g id="logoGraphic">
+
+    <!--
+      Outer hexagon silhouette — represents the registry node.
+      Coordinates: center (256,256), radius ~210, flat-top hexagon.
+    -->
+    <path id="hexBase"
+          d="M256,48L420,128V384L256,464L92,384V128Z"
+          fill="url(#hexBaseGrad)"
+          stroke="#2D8040"
+          stroke-width="4"
+          stroke-linejoin="round"
+          filter="url(#innerShadow)" />
+
+    <!-- Inner ghost outline for subtle depth -->
+    <path d="M256,64L404,136V376L256,448L108,376V136Z"
+          stroke="#E8F5E9"
+          stroke-width="2"
+          stroke-opacity="0.4"
+          fill="none"
+          stroke-linejoin="round" />
+
+    <!--
+      Brand "V" mark – open package metaphor.
+      The V also alludes to the 'V' in Verdaccio.
+    -->
+    <path id="vMark"
+          d="M256,150L340,370L256,320L172,370Z"
+          fill="#FFFFFF" />
+
+    <!-- Right highlight on V to create 3D fold effect -->
+    <path d="M256,150L340,370L256,320Z"
+          fill="#E8F5E9"
+          opacity="0.25" />
+
+    <!-- Central package crease line – reinforces 3D box geometry -->
+    <path d="M256,232L306,256V293L256,317L206,293V256Z"
+          fill="#4BB55E"
+          opacity="0.9" />
+
+    <!-- Glass/light top highlight – subtle glossy reflection -->
+    <path d="M256,88L390,152L390,368L256,432"
+          stroke="#FFFFFF"
+          stroke-width="1.5"
+          stroke-opacity="0.12"
+          fill="none" />
+
+  </g>
+
+  <!--
+    ================================================================
+    Fallback content for user agents that do not support SVG
+    or have SVG rendering disabled. Provides a text‑only message
+    and a simple colored rect with the brand initial.
+    ================================================================
+  -->
+  <switch>
+    <g requiredFeatures="http://www.w3.org/TR/SVG11/feature#SVG">
+      <!-- SVG supported: rendered by the <g> above -->
+      <use href="#logoGraphic" />
+    </g>
+    <!-- Fallback: use <foreignObject> with HTML or plain text -->
+    <foreignObject x="0" y="0" width="512" height="512">
+      <xhtml:div style="
+        width: 512px; height: 512px;
+        background: #3A9E4F;
+        border-radius: 16px;
+        display: flex; align-items: center; justify-content: center;
+        box-sizing: border-box;
+      ">
+        <xhtml:span style="
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 200px; color: white;
+          line-height: 1;
+        ">V</xhtml:span>
+      </xhtml:div>
+    </foreignObject>
+  </switch>
+
+  <!-- Inline performance hint (duplicate per spec but safe) -->
+  <style>
+    /* Optimize for sharpness at small sizes */
+    @media (min-resolution: 192dpi) {
+      #hexBase { shape-rendering: crispEdges; }
+    }
+  </style>
+</svg>

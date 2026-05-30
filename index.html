@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AIGON Enterprise v3.0 — Governed operational infrastructure platform. Capability lifecycle management, mesh orchestration, and real-time system governance." />
+  <meta name="theme-color" content="#0b0f1a" />
+  <meta name="color-scheme" content="dark" />
+  <meta property="og:title" content="AIGON Enterprise v3.0" />
+  <meta property="og:description" content="Governed operational infrastructure platform with real-time capability lifecycle management." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/assets/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-...' 'strict-dynamic'; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' http://localhost:26072; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests" />
+
+  <!-- Preconnect + Preload -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style" />
+  <link rel="preload" href="/assets/fonts/Inter-roman.var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/assets/js/vendor/react-dom.production.min.js" as="script" />
+  <link rel="preload" href="/assets/js/main.js" as="script" />
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+
+  <!-- Critical CSS inlined — AIGON Design System v3.0 -->
+  <style>
+    /* === RESET & BASE === */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+    body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0b0f1a;color:#e2e6ef;line-height:1.6;min-height:100vh;overflow-x:hidden;font-weight:400;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    a{color:#6c8cff;text-decoration:none;transition:color .2s}
+    a:hover{color:#8ba3ff}
+    img{max-width:100%;display:block}
+    button{cursor:pointer;font-family:inherit;border:none;background:none;color:inherit}
+    ul{list-style:none}
+    ::selection{background:#3b5fff;color:#fff}
+
+    /* === LAYOUT === */
+    .app-shell{display:grid;grid-template-rows:56px 1fr 40px;grid-template-columns:240px 1fr;grid-template-areas:"nav nav" "side main" "side foot";min-height:100vh}
+    .app-nav{grid-area:nav;background:#0f1421;border-bottom:1px solid #1e2640;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+    .app-sidebar{grid-area:side;background:#0d111e;border-right:1px solid #1a2138;padding:16px 0;overflow-y:auto;display:flex;flex-direction:column}
+    .app-main{grid-area:main;padding:32px 40px;overflow-y:auto;background:radial-gradient(ellipse at 20% 20%,#111827 0%,#0b0f1a 100%)}
+    .app-footer{grid-area:foot;background:#0d111e;border-top:1px solid #1a2138;padding:0 24px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#6b7394}
+
+    /* === NAV === */
+    .nav-brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px;color:#eef1fa;letter-spacing:-.02em}
+    .nav-brand svg{width:28px;height:28px;fill:none;stroke:#6c8cff;stroke-width:2}
+    .nav-brand span{background:linear-gradient(135deg,#eef1fa 0%,#8ba3ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .nav-status{display:flex;align-items:center;gap:20px;font-size:13px;color:#8e97b6}
+    .nav-status .indicator{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+    .indicator--active{background:#34d399;box-shadow:0 0 8px rgba(52,211,153,.5)}
+    .indicator--warn{background:#fbbf24;box-shadow:0 0 8px rgba(251,191,36,.4)}
+    .nav-actions{display:flex;align-items:center;gap:12px}
+    .nav-actions button{padding:6px 12px;border-radius:6px;font-size:13px;font-weight:500;background:#1e2640;color:#c8cee6;transition:background .2s}
+    .nav-actions button:hover{background:#2a3454}
+
+    /* === SIDEBAR === */
+    .sidebar-section{padding:8px 16px 4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#4a5278}
+    .sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 16px;margin:2px 8px;border-radius:8px;font-size:14px;font-weight:500;color:#b0b8d6;transition:all .15s}
+    .sidebar-item:hover{background:#1a2138;color:#e2e6ef}
+    .sidebar-item--active{background:#1e2844;color:#6c8cff;box-shadow:inset 3px 0 0 #6c8cff}
+    .sidebar-item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.75;flex-shrink:0}
+    .sidebar-badge{margin-left:auto;font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;background:#1e2844;color:#8ba3ff}
+
+    /* === MAIN CONTENT SHELL === */
+    .shell-header{margin-bottom:28px}
+    .shell-header h1{font-size:28px;font-weight:700;letter-spacing:-.03em;color:#eef1fa;margin-bottom:4px}
+    .shell-header p{font-size:15px;color:#7a83a6}
+    .shell-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:32px}
+    .metric-card{background:#111827;border:1px solid #1e2844;border-radius:12px;padding:18px 20px;transition:border-color .2s}
+    .metric-card:hover{border-color:#2e3a5e}
+    .metric-label{font-size:13px;font-weight:500;color:#6b7394;margin-bottom:4px}
+    .metric-value{font-size:26px;font-weight:700;color:#eef1fa;letter-spacing:-.02em}
+    .metric-sub{font-size:12px;color:#4a5278;margin-top:2px}
+    .shell-grid{display:grid;grid-template-columns:2fr 1fr;gap:24px}
+    @media(max-width:1024px){.app-shell{grid-template-columns:1fr;grid-template-areas:"nav" "main" "foot"}.app-sidebar{display:none}.app-main{padding:24px 20px}.shell-grid{grid-template-columns:1fr}}
+    @media(max-width:640px){.nav-status .stat-text{display:none}.shell-metrics{grid-template-columns:1fr 1fr}.metric-value{font-size:22px}}
+
+    /* === FOOTER === */
+    .footer-info{display:flex;align-items:center;gap:16px}
+    .footer-info span{display:flex;align-items:center;gap:4px}
+    .footer-version{color:#3b5fff;font-weight:600}
+
+    /* === LOADING SKELETON === */
+    .skeleton{background:linear-gradient(90deg,#1a2138 25%,#242e4a 50%,#1a2138 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px}
+    .skeleton--text{height:14px;width:60%;margin-bottom:8px}
+    .skeleton--title{height:28px;width:40%;margin-bottom:16px}
+    .skeleton--card{height:80px;width:100%;margin-bottom:12px}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+    /* === UTILITY === */
+    .flex-center{display:flex;align-items:center;justify-content:center}
+    .gap-2{gap:8px}
+    .gap-4{gap:16px}
+    .text-accent{color:#6c8cff}
+    .text-muted{color:#6b7394}
+    .truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+    /* === ICON SPRITE FALLBACK === */
+    .icon{display:inline-block;width:20px;height:20px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+  </style>
+
+  <!-- Inline SVG Sprite — zero external icon deps -->
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <symbol id="icon-dashboard" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></symbol>
+      <symbol id="icon-capabilities" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></symbol>
+      <symbol id="icon-mesh" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33"/><path d="M4.6 15a1.65 1.65 0 0 1-.33 1.82l-.06.06a2 2 0 0 0 2.83 2.83l.06-.06a1.65 1.65 0 0 1 1.82-.33"/><path d="M12 2v4"/><path d="M12 18v4"/></symbol>
+      <symbol id="icon-governance" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+      <symbol id="icon-logs" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol>
+      <symbol id="icon-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1.08 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1.08z"/></symbol>
+      <symbol id="icon-node" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></symbol>
+      <symbol id="icon-activity" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+      <symbol id="icon-alert" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+    </defs>
+  </svg>
+
+  <!-- Font stylesheet (non-blocking) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" /></noscript>
+</head>
+<body>
+  <div id="root" class="app-shell">
+    <!-- ===== NAVIGATION ===== -->
+    <header class="app-nav" role="banner">
+      <div class="nav-brand">
+        <svg viewBox="0 0 28 28" aria-hidden="true"><path d="M14 2L2 9v10l12 7 12-7V9L14 2z" stroke="#6c8cff" fill="none"/><circle cx="14" cy="14" r="4" fill="#6c8cff" opacity=".3"/></svg>
+        <span>AIGON</span><span style="font-weight:400;background:none;-webkit-text-fill-color:#6b7394;margin-left:-4px"> Enterprise</span>
+      </div>
+      <div class="nav-status">
+        <span class="stat-text"><span class="indicator indicator--active"></span>All systems nominal</span>
+        <span class="stat-text"><span class="indicator indicator--warn"></span>2 proposals pending</span>
+        <span class="stat-text">v3.0.0</span>
+      </div>
+      <div class="nav-actions">
+        <button type="button" aria-label="Notifications">🔔 <span class="sr-only">Notifications</span></button>
+        <button type="button" aria-label="User menu">👤 <span class="sr-only">Profile</span></button>
+      </div>
+    </header>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="app-sidebar" role="navigation" aria-label="Main navigation">
+      <div class="sidebar-section">Platform</div>
+      <a href="/" class="sidebar-item sidebar-item--active" aria-current="page">
+        <svg class="icon"><use href="#icon-dashboard" /></svg> Dashboard
+      </a>
+      <a href="/capabilities" class="sidebar-item">
+        <svg class="icon"><use href="#icon-capabilities" /></svg> Capabilities <span class="sidebar-badge">20</span>
+      </a>
+      <a href="/mesh" class="sidebar-item">
+        <svg class="icon"><use href="#icon-mesh" /></svg> Mesh Nodes <span class="sidebar-badge">8</span>
+      </a>
+      <div class="sidebar-section" style="margin-top:16px">Governance</div>
+      <a href="/proposals" class="sidebar-item">
+        <svg class="icon"><use href="#icon-governance" /></svg> Proposals <span class="sidebar-badge">2</span>
+      </a>
+      <a href="/audit" class="sidebar-item">
+        <svg class="icon"><use href="#icon-logs" /></svg> Audit Log
+      </a>
+      <div class="sidebar-section" style="margin-top:16px">System</div>
+      <a href="/settings" class="sidebar-item">
+        <svg class="icon"><use href="#icon-settings" /></svg> Settings
+      </a>
+      <a href="/activity" class="sidebar-item">
+        <svg class="icon"><use href="#icon-activity" /></svg> Activity
+      </a>
+      <div style="margin-top:auto;padding:16px;font-size:12px;color:#3b5fff;text-align:center;border-top:1px solid #1a2138">
+        Entropy: <span style="font-weight:600;color:#e2e6ef">0.10</span>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="app-main" role="main">
+      <!-- SSR content is hydrated into this container -->
+      <div id="ssr-content">
+        <div class="shell-header">
+          <h1>Operational Overview</h1>
+          <p>Real-time governance and capability lifecycle management</p>
+        </div>
+
+        <!-- Metric cards (server-rendered static fallback, replaced on hydration) -->
+        <div class="shell-metrics" id="metrics-root">
+          <div class="metric-card">
+            <div class="metric-label">Active Capabilities</div>
+            <div class="metric-value">20</div>
+            <div class="metric-sub">▼ 0 from last epoch</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Mesh Nodes</div>
+            <div class="metric-value">8</div>
+            <div class="metric-sub">▲ 2 online</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Avg Entropy</div>
+            <div class="metric-value">0.10</div>
+            <div class="metric-sub">▼ within threshold</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Pending Proposals</div>
+            <div class="metric-value">2</div>
+            <div class="metric-sub">▲ 1 new today</div>
+          </div>
+        </div>
+
+        <!-- Main grid: capability feed + node health -->
+        <div class="shell-grid">
+          <section aria-labelledby="feed-heading">
+            <h2 id="feed-heading" style="font-size:18px;font-weight:600;margin-bottom:16px;color:#e2e6ef">Capability Feed</h2>
+            <div style="background:#111827;border:1px solid #1e2844;border-radius:12px;padding:20px">
+              <div class="skeleton skeleton--title"></div>
+              <div class="skeleton skeleton--text" style="width:80%"></div>
+              <div class="skeleton skeleton--text" style="width:50%"></div>
+              <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+                <span style="padding:4px 12px;background:#1e2844;border-radius:20px;font-size:12px;color:#8ba3ff">proposal-queue</span>
+                <span style="padding:4px 12px;background:#1e2844;border-radius:20px;font-size:12px;color:#34d399">sandbox</span>
+                <span style="padding:4px 12px;background:#1e2844;border-radius:20px;font-size:12px;color:#fbbf24">observation</span>
+              </div>
+              <!-- Server-rendered static list — React replaces on hydrate -->
+              <ul style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+                <li style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #1a2138">
+                  <svg class="icon" style="color:#34d399"><use href="#icon-check" /></svg>
+                  <span style="flex:1;font-size:14px">capability:mesh-sync — promoted to active</span>
+                  <span style="font-size:12px;color:#4a5278">2m ago</span>
+                </li>
+                <li style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #1a2138">
+                  <svg class="icon" style="color:#fbbf24"><use href="#icon-alert" /></svg>
+                  <span style="flex:1;font-size:14px">capability:data-egress — entropy spike detected</span>
+                  <span style="font-size:12px;color:#4a5278">14m ago</span>
+                </li>
+                <li style="display:flex;align-items:center;gap:10px;padding:8px 0">
+                  <svg class="icon" style="color:#6c8cff"><use href="#icon-node" /></svg>
+                  <span style="flex:1;font-size:14px">node:omega-7 — health check passed</span>
+                  <span style="font-size:12px;color:#4a5278">32m ago</span>
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <aside aria-labelledby="health-heading">
+            <h2 id="health-heading" style="font-size:18px;font-weight:600;margin-bottom:16px;color:#e2e6ef">Node Health</h2>
+            <div style="background:#111827;border:1px solid #1e2844;border-radius:12px;padding:20px">
+              <div class="skeleton skeleton--card"></div>
+              <div class="skeleton skeleton--card" style="width:85%"></div>
+              <div class="skeleton skeleton--card" style="width:70%"></div>
+              <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:center;justify-content:space-between;font-size:13px">
+                  <span>alpha-1</span><span style="color:#34d399">● online</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;font-size:13px">
+                  <span>beta-3</span><span style="color:#34d399">● online</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;font-size:13px">
+                  <span>gamma-2</span><span style="color:#fbbf24">● degraded</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;font-size:13px">
+                  <span>delta-5</span><span style="color:#6b7394">○ standby</span>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Governance callout -->
+        <div style="margin-top:24px;padding:16px 20px;background:#111827;border:1px solid #1e2844;border-radius:12px;display:flex;align-items:center;gap:12px">
+          <svg class="icon" style="width:24px;height:24px;color:#3b5fff"><use href="#icon-governance" /></svg>
+          <span style="font-size:14px;color:#b0b8d6">All new capabilities enter through <strong style="color:#e2e6ef">proposal queue</strong> → <strong style="color:#e2e6ef">sandbox</strong> → <strong style="color:#e2e6ef">observation</strong> → <strong style="color:#e2e6ef">active</strong></span>
+        </div>
+      </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="app-footer" role="contentinfo">
+      <div class="footer-info">
+        <span>© 2026 AIGON Enterprise</span>
+        <span>·</span>
+        <span>Entropy: <span style="color:#e2e6ef;font-weight:500">0.10</span></span>
+        <span>·</span>
+        <span>Uptime: <span style="color:#e2e6ef;font-weight:500">99.97%</span></span>
+      </div>
+      <div class="footer-version">v3.0.0</div>
+    </footer>
+
+    <!-- ===== NON-JS FALLBACK MESSAGE ===== -->
+    <noscript>
+      <div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0b0f1a;z-index:9999;padding:32px;text-align:center">
+        <div>
+          <h2 style="font-size:24px;font-weight:700;margin-bottom:12px;color:#eef1fa">JavaScript Required</h2>
+          <p style="color:#8e97b6;max-width:420px">AIGON Enterprise requires JavaScript for full functionality. Please enable it in your browser settings.</p>
+        </div>
+      </div>
+    </noscript>
+  </div>
+
+  <!-- React 18 hydration entry — loaded after paint -->
+  <script>
+    // Boot sequence: register service worker, preload critical data
+    (function boot() {
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js').catch(function() {});
+        });
+      }
+      // Prefetch live data for React to consume on mount
+      var link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = '/api/capabilities/snapshot';
+      document.head.appendChild(link);
+    })();
+  </script>
+  <script src="/assets/js/vendor/react.production.min.js" defer></script>
+  <script src="/assets/js/vendor/react-dom.production.min.js" defer></script>
+  <script src="/assets/js/main.js" defer></script>
+</body>
+</html>
